@@ -11,13 +11,11 @@
 golem::fill_desc(
   pkg_name = "bdvisDashboard", # The Name of the package containing the App 
   pkg_title = "Dashboard For biodiversity data visualization", # The Title of the package containing the App 
-  pkg_description = "bdvisDashboard allow user to visualization biodiversity data.
-  This is a easy to use shiny dashboard which allow to visualize different aspect 
-  of biodiversity data such as temporal, taxonomic, spatial", # The Description of the package containing the App 
+  pkg_description = "The bdvisDashboard allow user to visualization biodiversity data. This is a easy to use shiny dashboard which allow to visualize different aspect of biodiversity data such as temporal, taxonomic, spatial.", # The Description of the package containing the App 
   author_first_name = "Rahul", # Your First Name
   author_last_name = "chauhan",  # Your Last Name
   author_email = "rahul.chauhan049@gmail.com",      # Your Email
-  repo_url = NULL # The (optional) URL of the GitHub Repo
+  repo_url = "https://github.com/rahulchauhan049/bdvisDashboard" # The (optional) URL of the GitHub Repo
 )     
 
 ## Use this desc to set {golem} options
@@ -25,7 +23,7 @@ golem::fill_desc(
 golem::set_golem_options()
 
 ## 1.2 - Set common Files 
-## 
+
 ## If you want to use the MIT licence, README, code of conduct, lifecycle badge, and news
 
 usethis::use_mit_license( name = "Golem User" )  # You can set another licence here
