@@ -108,7 +108,15 @@ mod_spatial_server <- function(input, output, session, data) {
             y = ~NumberOfRecords,
             name = "Countries",
             type = "bar"
-    ) %>% layout(showlegend = FALSE, height = 320)
+    ) %>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                 plot_bgcolor='#000000',
+                 xaxis = list(
+                   color = '#ffffff'),
+                 yaxis = list(
+                   color = '#ffffff'),
+                 leagend = list(
+                   color = '#ffffff'
+                 ))
   })
   
   observe({
@@ -176,7 +184,15 @@ mod_spatial_server <- function(input, output, session, data) {
           textinfo = 'label+percent',
           insidetextfont = list(color = '#FFFFFF'),
           hoverinfo = 'text'
-        )%>% layout(showlegend = FALSE, height = 320)
+        )%>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                    plot_bgcolor='#000000',
+                    xaxis = list(
+                      color = '#ffffff'),
+                    yaxis = list(
+                      color = '#ffffff'),
+                    leagend = list(
+                      color = '#ffffff'
+                    ))
       })
     } else {
       #create new dataset based on where user clicked on bar graph
@@ -210,7 +226,15 @@ mod_spatial_server <- function(input, output, session, data) {
           textinfo = 'label+percent',
           insidetextfont = list(color = '#FFFFFF'),
           hoverinfo = 'text'
-        ) %>% layout(showlegend = FALSE, height = 320)
+        ) %>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                     plot_bgcolor='#000000',
+                     xaxis = list(
+                       color = '#ffffff'),
+                     yaxis = list(
+                       color = '#ffffff'),
+                     leagend = list(
+                       color = '#ffffff'
+                     ))
       })
     }
   })
@@ -248,7 +272,15 @@ mod_spatial_server <- function(input, output, session, data) {
           textinfo = 'label+percent',
           insidetextfont = list(color = '#FFFFFF'),
           hoverinfo = 'text'
-        )%>% layout(showlegend = FALSE, height = 320)
+        )%>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                    plot_bgcolor='#000000',
+                    xaxis = list(
+                      color = '#ffffff'),
+                    yaxis = list(
+                      color = '#ffffff'),
+                    leagend = list(
+                      color = '#ffffff'
+                    ))
       })
     } else {
       #create new dataset based on where user clicked on bar graph
@@ -282,7 +314,15 @@ mod_spatial_server <- function(input, output, session, data) {
           textinfo = 'label+percent',
           insidetextfont = list(color = '#FFFFFF'),
           hoverinfo = 'text'
-        ) %>% layout(showlegend = FALSE, height = 320)
+        ) %>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                     plot_bgcolor='#000000',
+                     xaxis = list(
+                       color = '#ffffff'),
+                     yaxis = list(
+                       color = '#ffffff'),
+                     leagend = list(
+                       color = '#ffffff'
+                     ))
       })
     }
   })
@@ -305,7 +345,15 @@ mod_spatial_server <- function(input, output, session, data) {
                 y = ~NumberOfUniqueNames,
                 name = "Frequency of records",
                 type = "bar"
-        ) %>% layout(showlegend = FALSE, height = 320)
+        ) %>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                     plot_bgcolor='#000000',
+                     xaxis = list(
+                       color = '#ffffff'),
+                     yaxis = list(
+                       color = '#ffffff'),
+                     leagend = list(
+                       color = '#ffffff'
+                     ))
       })
     } else {
       output$records <- renderPlotly({
@@ -324,7 +372,15 @@ mod_spatial_server <- function(input, output, session, data) {
                 y = ~NumberOfUniqueNames,
                 name = "Frequency of records",
                 type = "bar"
-        ) %>% layout(showlegend = FALSE, height = 320)
+        ) %>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                     plot_bgcolor='#000000',
+                     xaxis = list(
+                       color = '#ffffff'),
+                     yaxis = list(
+                       color = '#ffffff'),
+                     leagend = list(
+                       color = '#ffffff'
+                     ))
       })
       
       
@@ -349,7 +405,15 @@ mod_spatial_server <- function(input, output, session, data) {
                 y = ~NumberOfUniqueNames,
                 name = "Frequency of records",
                 type = "bar"
-        ) %>% layout(showlegend = FALSE, height = 320)
+        ) %>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                     plot_bgcolor='#000000',
+                     xaxis = list(
+                       color = '#ffffff'),
+                     yaxis = list(
+                       color = '#ffffff'),
+                     leagend = list(
+                       color = '#ffffff'
+                     ))
       })
     } else {
       output$records <- renderPlotly({
@@ -368,7 +432,15 @@ mod_spatial_server <- function(input, output, session, data) {
                 y = ~NumberOfUniqueNames,
                 name = "Frequency of records",
                 type = "bar"
-        ) %>% layout(showlegend = FALSE, height = 320)
+        ) %>% layout(showlegend = FALSE, height = 320, paper_bgcolor='#000000',
+                     plot_bgcolor='#000000',
+                     xaxis = list(
+                       color = '#ffffff'),
+                     yaxis = list(
+                       color = '#ffffff'),
+                     leagend = list(
+                       color = '#ffffff'
+                     ))
       })
       
       

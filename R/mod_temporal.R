@@ -15,7 +15,7 @@
 #' @importFrom shiny NS tagList 
 mod_temporal_ui <- function(id){
   ns <- NS(id)
-  fluidPage(
+  fluidPage(style = "background-color: black;",
     fluidRow(
       column(12,
              plotlyOutput(ns("bar"), height = "250px"),
@@ -98,8 +98,17 @@ mod_temporal_server <- function(input, output, session, dataTemporal){
       y = ~ value,
       color = ~ group
     ) %>%
-      add_bars()
-    
+      add_bars() %>%
+      layout(barmode = 'stack', 
+             paper_bgcolor='#000000',
+             plot_bgcolor='#000000',
+             xaxis = list(
+               color = '#ffffff'),
+             yaxis = list(
+               color = '#ffffff'),
+             leagend = list(
+               color = '#ffffff')
+      )
   })
   
   observe({
@@ -135,7 +144,15 @@ mod_temporal_server <- function(input, output, session, dataTemporal){
           textinfo = 'label+percent',
           insidetextfont = list(color = '#FFFFFF'),
           hoverinfo = 'text'
-        )%>% layout(showlegend = FALSE)
+        )%>% layout(showlegend = FALSE, paper_bgcolor='#000000',
+                    plot_bgcolor='#000000',
+                    xaxis = list(
+                      color = '#ffffff'),
+                    yaxis = list(
+                      color = '#ffffff'),
+                    leagend = list(
+                      color = '#ffffff')
+        )
       })
     } else {
       #create new dataset based on where user clicked on bar graph
@@ -169,7 +186,15 @@ mod_temporal_server <- function(input, output, session, dataTemporal){
           textinfo = 'label+percent',
           insidetextfont = list(color = '#FFFFFF'),
           hoverinfo = 'text'
-        ) %>% layout(showlegend = FALSE)
+        ) %>% layout(showlegend = FALSE, paper_bgcolor='#000000',
+                     plot_bgcolor='#000000',
+                     xaxis = list(
+                       color = '#ffffff'),
+                     yaxis = list(
+                       color = '#ffffff'),
+                     leagend = list(
+                       color = '#ffffff'
+                     ))
       })
     }
     
@@ -198,8 +223,21 @@ mod_temporal_server <- function(input, output, session, dataTemporal){
           fill = group
         )) +
           geom_bar(stat = "identity") +
-          coord_polar() + xlab("") + ylab("")    
-      })
+          coord_polar() + xlab("") + ylab("") + theme(
+            panel.border = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_rect(fill = "#000000", colour = "#000000"),
+            plot.background = element_rect(fill = "#000000"),
+            axis.text.x = element_text(color="#ffffff", size = 17),
+            axis.text.y = element_text(color="#ffffff", size = 17),
+            # Change legend 
+            legend.background = element_rect(fill = "black", color = NA),
+            legend.key = element_rect(color = "gray", fill = "black"),
+            legend.title = element_text(color = "white"),
+            legend.text = element_text(color = "white")
+            
+          )
+      },  bg="transparent")
     } else {
       output$roseplot <- renderPlot({
         
@@ -221,7 +259,20 @@ mod_temporal_server <- function(input, output, session, dataTemporal){
           fill = group
         )) +
           geom_bar(stat = "identity") +
-          coord_polar() + xlab("") + ylab("") 
+          coord_polar() + xlab("") + ylab("") + theme(
+            panel.border = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_rect(fill = "#000000", colour = "#000000"),
+            plot.background = element_rect(fill = "#000000"),
+            axis.text.x = element_text(color="#ffffff", size = 17),
+            axis.text.y = element_text(color="#ffffff", size = 17),
+            # Change legend 
+            legend.background = element_rect(fill = "black", color = NA),
+            legend.key = element_rect(color = "gray", fill = "black"),
+            legend.title = element_text(color = "white"),
+            legend.text = element_text(color = "white")
+            
+          )  
       })
     }
   })
