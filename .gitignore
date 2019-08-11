@@ -1,3 +1,9 @@
 .Rhistory
 .RData
 .Rproj.user
+^data-raw$
+dev_history.R
+^dev$
+$run_dev.*
+$run_dev.*
+^README\.Rmd$
