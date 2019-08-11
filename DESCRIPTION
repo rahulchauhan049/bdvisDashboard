@@ -7,8 +7,32 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    shiny, 
-    golem
-RoxygenNote: 6.1.0
+    shiny,
+    golem,
+    processx,
+    attempt,
+    DT,
+    glue,
+    htmltools,
+    shinydashboard,
+    leaflet,
+    dplyr,
+    dashboardthemes,
+    ggpubr,
+    plotly,
+    circlepackeR,
+    data.tree,
+    flexdashboard,
+    bdvis,
+    ggplot2,
+    tidyr,
+    treemap,
+    sunburstR
+RoxygenNote: 6.1.1
 URL: https://github.com/rahulchauhan049/bdvisDashboard
 BugReports: https://github.com/rahulchauhan049/bdvisDashboard/issues
+Suggests: 
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
