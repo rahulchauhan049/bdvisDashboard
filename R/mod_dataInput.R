@@ -180,6 +180,10 @@ mod_dataInput_ui <- function(id){
 
 mod_dataInput_server <- function(input, output, session, parentSession){
   ns <- session$ns
+  #load the rda file
+  load(file = "data/mammals.rda")
+  load(file = "data/pumaConcolor.rda")
+  load(file = "data/hyena.rda")
   returnData <- pumaConcolor
   map <- leafletProxy(ns("mymap"))
   
@@ -390,6 +394,7 @@ mod_dataInput_server <- function(input, output, session, parentSession){
   
   returnDataReact <- reactive({
     # Input actions that need to trigger new dataframe return 
+    input$loadexisting
     input$inputFile
     input$queryDatabase
     
