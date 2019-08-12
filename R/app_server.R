@@ -2,11 +2,10 @@
 options(shiny.maxRequestSize = 5000 * 1024 ^ 2)
 
 app_server <- function(input, output, session) {
-  
-  
   ##################Input tabs#################################
   
-  inputDataset <- callModule(mod_dataInput_server, "dataInput_ui_1", session)
+  inputDataset <-
+    callModule(mod_dataInput_server, "dataInput_ui_1", session)
   
   ##############################################################
   

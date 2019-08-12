@@ -1,5 +1,5 @@
 # Module UI
-  
+
 #' @title   mod_taxonomic_ui and mod_taxonomic_server
 #' @description  A shiny Module.
 #'
@@ -11,29 +11,46 @@
 #' @rdname mod_taxonomic
 #'
 #' @keywords internal
-#' @export 
-#' @importFrom shiny NS tagList 
-mod_taxonomic_ui <- function(id){
+#' @export
+#' @importFrom shiny NS tagList
+mod_taxonomic_ui <- function(id) {
   ns <- NS(id)
   fluidPage(
     fluidRow(
-      column(6,
-             plotlyOutput(ns("taxonomicBar"),height = "250px"),
-             absolutePanel(             
-               top=10,
-               right = 10,
-               selectizeInput(
-                 ns("taxoBarInput"),
-                 "Select Taxonomic Level",
-                 c("Kingdom", "Phylum", "Order", "Family", "Genus", "Species"),
-                 selected = "Order"
-               ))
+      column(
+        6,
+        plotlyOutput(
+          ns("taxonomicBar"),
+          height = "250px"
+        ),
+        absolutePanel(
+          top = 10,
+          right = 10,
+          selectizeInput(
+            ns("taxoBarInput"),
+            "Select Taxonomic Level",
+            c("Kingdom", "Phylum", "Order", "Family", "Genus", "Species"),
+            selected = "Order"
+          )
+        )
       ),
-      column(6,
-             circlepackeROutput(ns("circleplot"), height = "300px"))
+      column(
+        6,
+        circlepackeROutput(
+          ns("circleplot"),
+          height = "300px"
+        )
+      )
     ),
     fluidRow(
-      column(6,sunburstOutput(ns("sunbrust"), height = "300px"))    )
+      column(
+        6,
+        sunburstOutput(
+          ns("sunbrust"),
+          height = "300px"
+        )
+      )
+    )
   )
 }
 
@@ -43,7 +60,7 @@ mod_taxonomic_ui <- function(id){
 #' @export
 #' @keywords internal
 
-mod_taxonomic_server <- function(input, output, session, dataTaxo){
+mod_taxonomic_server <- function(input, output, session, dataTaxo) {
   ns <- session$ns
   output$taxonomicBar <- renderPlotly({
     if (input$taxoBarInput == "Kingdom") {
@@ -83,17 +100,23 @@ mod_taxonomic_server <- function(input, output, session, dataTaxo){
       })
     } else {
       if (input$taxoBarInput == "Kingdom") {
-        newData <- dataTaxo() %>% filter(kingdom %in% select$y)
+        newData <- dataTaxo() %>%
+          filter(kingdom %in% select$y)
       } else if (input$taxoBarInput == "Phylum") {
-        newData <- dataTaxo() %>% filter(phylum %in% select$y)
+        newData <- dataTaxo() %>% 
+          filter(phylum %in% select$y)
       } else if (input$taxoBarInput == "Family") {
-        newData <- dataTaxo() %>% filter(family %in% select$y)
+        newData <- dataTaxo() %>% 
+          filter(family %in% select$y)
       } else if (input$taxoBarInput == "Genus") {
-        newData <- dataTaxo() %>% filter(genus %in% select$y)
+        newData <- dataTaxo() %>%
+          filter(genus %in% select$y)
       } else if (input$taxoBarInput == "Species") {
-        newData <- dataTaxo() %>% filter(species %in% select$y)
+        newData <- dataTaxo() %>%
+          filter(species %in% select$y)
       } else{
-        newData <- dataTaxo() %>% filter(order %in% select$y)
+        newData <- dataTaxo() %>%
+          filter(order %in% select$y)
       }
       if (nrow(newData) == 0) {
         output$circleplot <- renderCirclepackeR({
@@ -131,17 +154,17 @@ mod_taxonomic_server <- function(input, output, session, dataTaxo){
   
   output$sunbrust <- renderSunburst({
     data <- dataTaxo()
-    if (!nrow(data[-which(data[, "genus"] == ""),]) == 0) {
-      data <- data[-which(data[, "genus"] == ""),]
+    if (!nrow(data[-which(data[, "genus"] == ""), ]) == 0) {
+      data <- data[-which(data[, "genus"] == ""), ]
     }
-    if (!nrow(data[-which(data[, "family"] == ""),]) == 0) {
-      data <- data[-which(data[, "family"] == ""),]
+    if (!nrow(data[-which(data[, "family"] == ""), ]) == 0) {
+      data <- data[-which(data[, "family"] == ""), ]
     }
-    if (!nrow(data[-which(data[, "order"] == ""),]) == 0) {
-      data <- data[-which(data[, "order"] == ""),]
+    if (!nrow(data[-which(data[, "order"] == ""), ]) == 0) {
+      data <- data[-which(data[, "order"] == ""), ]
     }
-    if (!nrow(data[-which(data[, "phylum"] == ""),]) == 0) {
-      data <- data[-which(data[, "phylum"] == ""),]
+    if (!nrow(data[-which(data[, "phylum"] == ""), ]) == 0) {
+      data <- data[-which(data[, "phylum"] == ""), ]
     }
     data <- arrange(data, family)
     temp <- as.data.frame(table(data["genus"]))
@@ -149,27 +172,27 @@ mod_taxonomic_server <- function(input, output, session, dataTaxo){
     temp <- merge(data, temp , by.x = "genus", by.y = "Var1")
     temp <- temp[c("phylum", "order", "family", "genus", "Freq")]
     temp <- temp %>%
-      mutate(path = paste(phylum, order, family, genus, sep="-")) %>%
+      mutate(path = paste(phylum, order, family, genus, sep = "-")) %>%
       dplyr::select(path, Freq)
     
     # Plot
-    sunburst(temp, legend=FALSE)
+    sunburst(temp, legend = FALSE)
   })
   
   #Function
   formatData <- function(data) {
     data <- na.omit(data[c("phylum", "order", "family", "genus")])
-    if (!nrow(data[-which(data[, "phylum"] == ""), ]) == 0) {
-      data <- data[-which(data[, "phylum"] == ""), ]
+    if (!nrow(data[-which(data[, "phylum"] == ""),]) == 0) {
+      data <- data[-which(data[, "phylum"] == ""),]
     }
-    if (!nrow(data[-which(data[, "order"] == ""), ]) == 0) {
-      data <- data[-which(data[, "order"] == ""), ]
+    if (!nrow(data[-which(data[, "order"] == ""),]) == 0) {
+      data <- data[-which(data[, "order"] == ""),]
     }
-    if (!nrow(data[-which(data[, "family"] == ""), ]) == 0) {
-      data <- data[-which(data[, "family"] == ""), ]
+    if (!nrow(data[-which(data[, "family"] == ""),]) == 0) {
+      data <- data[-which(data[, "family"] == ""),]
     }
-    if (!nrow(data[-which(data[, "genus"] == ""), ]) == 0) {
-      data <- data[-which(data[, "genus"] == ""), ]
+    if (!nrow(data[-which(data[, "genus"] == ""),]) == 0) {
+      data <- data[-which(data[, "genus"] == ""),]
     }
     data <- arrange(data, family)
     temp <- as.data.frame(table(data["genus"]))
@@ -190,4 +213,3 @@ mod_taxonomic_server <- function(input, output, session, dataTaxo){
 
 ## To be copied in the server
 # callModule(mod_taxonomic_server, "taxonomic_ui_1")
-
