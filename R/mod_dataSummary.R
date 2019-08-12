@@ -25,42 +25,50 @@ mod_dataSummary_ui <- function(id){
     ),
     # fluidRow(column(12,plotOutput(ns("gauge"), height = "150px"))),br(),
     fluidRow(style='padding-top:-50px;',
-             column(3,style='padding-top:-50px;',
-                    div(
-                      class = "center",
-                      fluidRow(
-                        shinydashboard::valueBoxOutput((ns("boxA")), width = "100%")),
-                      fluidRow(  
-                        shinydashboard::valueBoxOutput((ns("boxB")), width = "100%")),
-                      fluidRow(
-                        shinydashboard::valueBoxOutput((ns("boxC")), width = "100%"))
-                    )
-             )
-             ,column(9,style='padding:20px;',tabsetPanel(
-               tabPanel("Spatial",fluidRow(column(3,style='padding:20px;',fluidRow(
-                 shinydashboard::valueBoxOutput(ns("totalCountry"), width = "40%")),
-                 fluidRow(
-                   shinydashboard::valueBoxOutput(ns("naCountry"), width = "40%"))),
-                 column(9,plotlyOutput(ns("countryBar")))
-               )),
+             column(4, shinydashboard::valueBoxOutput((ns("boxA")), width = "100%")),
+             column(4, shinydashboard::valueBoxOutput((ns("boxB")), width = "100%")),
+             column(4, shinydashboard::valueBoxOutput((ns("boxC")), width = "100%"))
+             ),
+    fluidRow(style='padding-top:-50px;'
+             ,column(12,style='padding:20px;',
+                     tabsetPanel(
+                       tabPanel("spatial", DT::dataTableOutput(ns("spatialTable"))),
+               # tabPanel("Spatial",fluidRow(column(3,style='padding:20px;',fluidRow(
+               #   shinydashboard::valueBoxOutput(ns("totalCountry"), width = "40%")),
+               #   fluidRow(
+               #     shinydashboard::valueBoxOutput(ns("naCountry"), width = "40%"))),
+               #   column(9,plotlyOutput(ns("countryBar")))
+               # )),
                tabPanel("Temporal", fluidRow(column(3, style = "padding:20px",
                                                     fluidRow(
                                                       shinydashboard::valueBoxOutput(ns("yearstart"), width = "40%")),
                                                     fluidRow(
                                                       shinydashboard::valueBoxOutput(ns("yearend"), width = "40%"))),
                                              column(9,
-                                                    selectInput(
-                                                      ns("barselect"),
-                                                      "Select Column to be displayed",
-                                                      c("basisOfRecord", "kingdom", "phylum", "order", "family", "genus", "species"),
-                                                      selected = "basisOfRecord"
-                                                    ),plotlyOutput(ns("bar"), height = "50%")
+                                                    DT::dataTableOutput(ns("temporalTable"))
+                                                    # selectInput(
+                                                    #   ns("barselect"),
+                                                    #   "Select Column to be displayed",
+                                                    #   c("basisOfRecord", "kingdom", "phylum", "order", "family", "genus", "species"),
+                                                    #   selected = "basisOfRecord"
+                                                    # ),plotlyOutput(ns("bar"), height = "50%")
                                              ))
                ),
                
                
                tabPanel("Taxonomic",
-                        sunburstOutput(ns("sunbrust"), height = "350px"))
+                        fluidRow(
+                          column(4, shinydashboard::infoBoxOutput(ns("kingdom"), width = "100%")),
+                          column(4, shinydashboard::infoBoxOutput(ns("phylum"), width = "100%")),
+                          column(4, shinydashboard::infoBoxOutput(ns("order"), width = "100%"))
+                        ),
+                        fluidRow(
+                          column(4, shinydashboard::infoBoxOutput(ns("family"), width = "100%")),
+                          column(4, shinydashboard::infoBoxOutput(ns("genus"), width = "100%")),
+                          column(4, shinydashboard::infoBoxOutput(ns("species"), width = "100%"))
+                        )
+                        )
+                        # sunburstOutput(ns("sunbrust"), height = "350px"))
              ))
     )#End of fluidRow
   )
@@ -92,33 +100,76 @@ mod_dataSummary_server <- function(input, output, session, dataset){
   
   output$Gauge2 <- flexdashboard::renderGauge({
     df <- dataset()
-    dateIdentified <- round(((nrow(df["dateIdentified"])-sum(is.na(df["dateIdentified"])))/nrow(df["dateIdentified"])), 2)*100
-    gauge(dateIdentified, min = 0, max = 100, symbol = "%", label = "% of rows\nwith dateIdentified records", gaugeSectors(
+    countryRecord <- round(((nrow(df["countryCode"])-sum(is.na(df["countryCode"])))/nrow(df["countryCode"])), 2)*100
+    gauge(countryRecord, min = 0, max = 100, symbol = "%", label = "% of rows\nwith dateIdentified records", gaugeSectors(
       success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
     )) 
   })  
   
   output$Gauge3 <- flexdashboard::renderGauge({
     df <- dataset()
-    occurrenceRemarks <- round(((nrow(df["occurrenceRemarks"])-sum(is.na(df["occurrenceRemarks"])))/nrow(df["occurrenceRemarks"])), 2)*100
-    gauge(occurrenceRemarks, min = 0, max = 100, symbol = "%", label = "% of rows\nwith occurence remark", gaugeSectors(
+    institutionCode <- round(((nrow(df["institutionCode"])-sum(is.na(df["institutionCode"])))/nrow(df["institutionCode"])), 2)*100
+    gauge(institutionCode, min = 0, max = 100, symbol = "%", label = "% of rows\nwith occurence remark", gaugeSectors(
       success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
     )) 
   })
   
   output$Gauge4 <- flexdashboard::renderGauge({
     df <- dataset()
-    eventTime <- round(((nrow(df["eventTime"])-sum(is.na(df["eventTime"])))/nrow(df["eventTime"])), 2)*100
-    gauge(eventTime, min = 0, max = 100, symbol = "%", label = "% of rows\nwith eventTime records", gaugeSectors(
+    basisOfRecord <- round(((nrow(df["basisOfRecord"])-sum(is.na(df["basisOfRecord"])))/nrow(df["basisOfRecord"])), 2)*100
+    gauge(basisOfRecord, min = 0, max = 100, symbol = "%", label = "% of rows\nwith eventTime records", gaugeSectors(
       success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
     )) 
   })  
   
+  output$spatialTable <- DT::renderDataTable({
+    df <- dataset()
+    names <- c("decimalLatitude", "decimalLongitude", "coordinateUncertaintyInMeters",
+               "coordinatePrecision", "countryCode", "locality")
+    
+    TotalRecords <- c(nrow(df["decimalLatitude"]), nrow(df["decimalLongitude"]), nrow(df["coordinateUncertaintyInMeters"]),
+                      nrow(df["coordinatePrecision"]), nrow(df["countryCode"]), nrow(df["locality"]))
+    
+    MissingRecords <- c(sum(is.na(df["decimalLatitude"])), sum(is.na(df["decimalLongitude"])), 
+                        sum(is.na(df["coordinateUncertaintyInMeters"])), sum(is.na(df["coordinatePrecision"])), 
+                        sum(is.na(df["countryCode"])), sum(is.na(df["locality"])))
+    RecordsPercentage<- c(paste0(round(((nrow(df["decimalLatitude"])-sum(is.na(df["decimalLatitude"])))/nrow(df["decimalLatitude"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["decimalLongitude"])-sum(is.na(df["decimalLongitude"])))/nrow(df["decimalLongitude"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["coordinateUncertaintyInMeters"])-sum(is.na(df["coordinateUncertaintyInMeters"])))/nrow(df["coordinateUncertaintyInMeters"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["coordinatePrecision"])-sum(is.na(df["coordinatePrecision"])))/nrow(df["coordinatePrecision"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["countryCode"])-sum(is.na(df["countryCode"])))/nrow(df["countryCode"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["locality"])-sum(is.na(df["locality"])))/nrow(df["locality"])), 2)*100,"%"))
+    
+    table <- data.frame(names, TotalRecords, MissingRecords, RecordsPercentage)
+    table
+  })
+  
+  output$temporalTable <- DT::renderDataTable({
+    df <- dataset()
+    names <- c("eventDate", "day", "month",
+               "year", "dateIdentified", "lastInterpreted")
+    
+    TotalRecords <- c(nrow(df["eventDate"]), nrow(df["day"]), nrow(df["month"]),
+                      nrow(df["year"]), nrow(df["dateIdentified"]), nrow(df["lastInterpreted"]))
+    
+    MissingRecords <- c(sum(is.na(df["eventDate"])), sum(is.na(df["day"])), 
+                        sum(is.na(df["month"])), sum(is.na(df["year"])), 
+                        sum(is.na(df["dateIdentified"])), sum(is.na(df["lastInterpreted"])))
+    RecordsPercentage<- c(paste0(round(((nrow(df["eventDate"])-sum(is.na(df["eventDate"])))/nrow(df["eventDate"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["day"])-sum(is.na(df["day"])))/nrow(df["day"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["month"])-sum(is.na(df["month"])))/nrow(df["month"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["year"])-sum(is.na(df["year"])))/nrow(df["year"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["dateIdentified"])-sum(is.na(df["dateIdentified"])))/nrow(df["dateIdentified"])), 2)*100,"%"),
+                          paste0(round(((nrow(df["lastInterpreted"])-sum(is.na(df["lastInterpreted"])))/nrow(df["lastInterpreted"])), 2)*100,"%"))
+    
+    tableTemporal <- data.frame(names, TotalRecords, MissingRecords, RecordsPercentage)
+    tableTemporal
+  })
   
   
   output$boxA <- shinydashboard::renderValueBox({shinydashboard::valueBox(
     value = (nrow(dataset()["decimalLatitude"])),
-    subtitle = "# of Records\n(# of Geo-coordinates)",
+    subtitle = "# of Records",
     icon = icon("compass"),
     color = "aqua",
     width = 1
@@ -155,6 +206,61 @@ mod_dataSummary_server <- function(input, output, session, dataset){
       icon = icon("clock"),
       color = "aqua",
       width = 1
+    )
+  })
+  
+  output$kingdom <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "# of Kingdom",
+      nrow(unique(na.omit(dataset()["kingdom"]))),
+      icon = icon("clock"),
+      color = "aqua",
+      width = 4
+    )
+  })
+  output$phylum <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "# of Kingdom",
+      nrow(unique(na.omit(dataset()["phylum"]))),
+      icon = icon("clock"),
+      color = "aqua",
+      width = 4
+    )
+  })
+  output$order <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "# of Kingdom",
+      nrow(unique(na.omit(dataset()["order"]))),
+      icon = icon("clock"),
+      color = "aqua",
+      width = 4
+    )
+  })
+  
+  output$family <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "# of Kingdom",
+      nrow(unique(na.omit(dataset()["family"]))),
+      icon = icon("clock"),
+      color = "aqua",
+      width = 4
+    )
+  })
+  output$genus <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "# of Kingdom",
+      nrow(unique(na.omit(dataset()["genus"]))),
+      icon = icon("clock"),
+      color = "aqua",
+      width = 4
+    )
+  })
+  output$species <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "# of Kingdom",
+      nrow(unique(na.omit(dataset()["species"]))),
+      color = "aqua",
+      width = 4
     )
   })
   

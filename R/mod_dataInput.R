@@ -194,7 +194,7 @@ mod_dataInput_server <- function(input, output, session, parentSession){
       returnData <<- mammals
     } else if(input$dataSet=="Hyena"){
       returnData <<- hyena
-    } else if(input$data=="Puma Concolor"){
+    } else if(input$dataSet=="Puma Concolor"){
       returnData <<- pumaConcolor
     }
     dataLoadedTask(returnData)

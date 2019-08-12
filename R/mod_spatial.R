@@ -16,8 +16,8 @@
 mod_spatial_ui <- function(id) {
   ns <- NS(id)
   
-  fluidPage(fluidRow(column(4, plotlyOutput(ns("countryBar"), height = "360px")),
-                     column(4, plotlyOutput(ns("pie"), height = "360px"),
+  fluidPage(fluidRow(column(4, style = "padding: 0 0 0 0;", plotlyOutput(ns("countryBar"), height = "360px")),
+                     column(4, style = "padding: 0 0 0 0;", plotlyOutput(ns("pie"), height = "360px"),
                             absolutePanel(top = 10,
                                           left = 20,
                                           selectInput(
@@ -26,9 +26,8 @@ mod_spatial_ui <- function(id) {
                                             c("basisOfRecord", "kingdom", "phylum", "order", "family", "genus", "species"),
                                             selected = "basisOfRecord"
                                           ))),
-                     column(4, plotlyOutput(ns("records"), height = "360px"))),
-            fluidRow(column(
-              12,
+                     column(4, style = "padding: 0 0 0 0;", plotlyOutput(ns("records"), height = "360px"))),
+            fluidRow(column(12,
               leafletOutput(ns("mymap"), height = "240px"),
               absolutePanel(
                 top = 60,
